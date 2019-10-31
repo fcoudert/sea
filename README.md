@@ -1,2 +1,3 @@
 # sea
-p5js library
+Library  (by default it use p5js for display)
+easy build composants and handlers
