@@ -1,7 +1,9 @@
 let sea = (function() {
 
 
+
 	let clickArray = [];
+	let allObjects = [];
 
 
 
@@ -19,33 +21,88 @@ let sea = (function() {
 
 		},
 		header: function(jsonArray) {
-			this.id = jsonArray.id || '0';
+			this.id = jsonArray.id || '';
 			this.backgroundColor = jsonArray.backgroundColor || '#000';
-			this.color = jsonArray.color || '#fff';
-			this.fontSize = jsonArray.fontSize || 10;
 			this.height = jsonArray.height || screen.height / 10;
-			fill(this.backgroundColor);
-			rect(0, 0, screen.width, this.height);
+			this.isVisible = jsonArray.isVisible || true;
+			this.x = 0;
+			this.y = 0;
+			this.width = jsonArray.width || screen.width;
+			this.redraw = jsonArray.reDraw || false;
+			this.move = jsonArray.move || function() {};
+			this.seaType = 'header';
+			this.display = function() {
+				if (this.isVisible === true) {
+					fill(this.backgroundColor);
+					rect(this.x, this.y, this.width, this.height);
+				}
+			}
 			this.link = function(event, functionToCall) {
 				if (event === 'click') {
 					var tmp = {};
-					tmp.x = 0;
-					tmp.y = 0;
-					tmp.width = screen.width;
-					tmp.height = this.height;
+					tmp.obj = this;
 					tmp.functionToCall = functionToCall;
 					clickArray.push(tmp);
 				}
 			}
+			allObjects.push(this);
+		},
+
+		box: function(jsonArray) {
+			this.id = jsonArray.id || '';
+			this.backgroundColor = jsonArray.backgroundColor || '#000';
+			this.height = jsonArray.height || screen.height / 10;
+			this.isVisible = jsonArray.isVisible || true;
+			this.x = jsonArray.x || 0;
+			this.y = jsonArray.y || 0;
+			this.width = jsonArray.width || screen.width;
+			this.redraw = jsonArray.reDraw || false;
+			this.move = jsonArray.move || function() {};
+			this.seaType = 'box';
+			this.display = function() {
+				if (this.isVisible === true) {
+					fill(this.backgroundColor);
+					rect(this.x, this.y, this.width, this.height);
+				}
+			}
+			this.link = function(event, functionToCall) {
+				if (event === 'click') {
+					var tmp = {};
+					tmp.obj = this;
+					tmp.functionToCall = functionToCall;
+					clickArray.push(tmp);
+				}
+			}
+			allObjects.push(this);
+		},
+
+
+
+
+
+
+		screen: screen,
+
+		draw: function() {
+			allObjects.forEach(function(elem) {
+				if (elem.isVisible === true) elem.display();
+			})
 
 		},
-		screen: screen,
+		move: function() {
+			allObjects.forEach(function(elem) {
+				if (elem.move !== undefined) elem.move();
+			})
+		},
 
 
 		mousePressed: function() {
 			clickArray.forEach(function(elem) {
-				if (mouseX > elem.x && mouseX < (elem.x + elem.width) && mouseY > elem.y && mouseY < (elem.y + elem.height)) {
-					elem.functionToCall();
+				if (mouseX > elem.obj.x && mouseX < (elem.obj.x + elem.obj.width) && mouseY > elem.obj.y && mouseY < (elem.obj.y + elem.obj.height)) {
+					if (typeof elem.functionToCall === "function") {
+						var t = elem.functionToCall.bind(elem.obj);
+						t();
+					}
 				}
 			})
 		}
