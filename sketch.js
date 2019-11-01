@@ -3,10 +3,10 @@ let myBox = {};
 
 
 function setup() {
-	sea.screen.width = 800;
-	createCanvas(sea.screen.width, sea.screen.height);
-	background(sea.screen.background);
-	myHeader = new sea.header({
+	sea5.screen.width = 800;
+	createCanvas(sea5.screen.width, sea5.screen.height);
+	background(sea5.screen.background);
+	myHeader = new sea5.header({
 		'id': 'monHeader',
 		'backgroundColor': 'red',
 		'isVisible': true,
@@ -15,17 +15,17 @@ function setup() {
 
 
 
-	myBox = new sea.box({
+	myBox = new sea5.box({
 		'id': 'movingBox',
 		'backgroundColor': 'green',
 		'isVisible': true,
-		'x': sea.screen.width / 2,
-		'y': sea.screen.height,
+		'x': sea5.screen.width / 2,
+		'y': sea5.screen.height,
 		'width': 50,
 		'height': 50,
 		'move': function() {
 			this.y = this.y - 1;
-			if (this.y < 0)(this.y = sea.screen.height);
+			if (this.y < 0)(this.y = sea5.screen.height);
 		}
 	})
 
@@ -38,14 +38,14 @@ function setup() {
 }
 
 function draw() {
-	background(sea.screen.background);
-	sea.move();
-	sea.draw(); //call all display function when reDraw is true
+	background(sea5.screen.background);
+	sea5.move();
+	sea5.draw(); //call all display function when reDraw is true
 
 }
 
 function mousePressed() {
-	sea.mousePressed(); //call linked function on objects you've created
+	sea5.mousePressed(); //call linked function on objects you've created
 }
 
 
